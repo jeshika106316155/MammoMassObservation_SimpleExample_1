@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <script language="JavaScript" type="text/javascript" src="https://jeshika106316155.github.io/MammoMassObservation_SimpleExample/MammoMassObservation_Example/jsonObservation%20copy.js"></script>
+</head>
+
+<body>
+    <form id="patient" name="patient" style="text-align: left">
+
+        <h1>New Observation</h1>
+        <h3>Mammo Mass</h3>
+        Size:<input type="text" name="ObsSize" id="ObsSize" value="" /> cm<br>
+        Shape:
+        <input type="radio" name="ObsShape" id="ObsShapeRound" value="Round" />Round
+        <input type="radio" name="ObsShape" id="ObsShapeOval" value="Oval" />Oval Shape
+        <input type="radio" name="ObsShape" id="ObsShapeLobulated" value="Lobulated" />Lobulated Shape
+        <input type="radio" name="ObsShape" id="ObsShapeIrregular" value="Irregular" />Irregular Shape
+        <br>
+        <input type="button" value="確定" id="patient" onclick="check(this)" />
+    </form>
+    <textarea id="Textarea1" cols="80" rows="20"></textarea>
+    <br>Url: <input type="text" id="urltext" value="" size="50" />
+    <input type="button" value="open" id="Openurl" onclick="openUrl()" />
+    
+    <script>
+        //上傳json物件到fhir server的涵式
+        function postData(jsonObject, resourceType) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", fhir.url + resourceType, true); //做上傳資料(POST的動作)到線上fhir資料庫(透過fhir伺服器url/資料表)
+            xhttp.setRequestHeader("Content-type", 'application/json');
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    var ret = JSON.parse(this.responseText);
+                    alert(this.responseText);
+                    //顯示上傳資料的連結
+                    document.getElementById("urltext").value=fhir.url + resourceType+"/"+ret.id;
+                }
+            };
+            //var data = JSON.stringify(jsonObject);
+            xhttp.send(jsonObject);
+        }
+        //檢查和設json物件的涵式
+        function check(p) {
+            //檢查是否標單都填完畢
+            if ((document.getElementById("ObsSize").value != "") && (document.getElementById("ObsShapeRound").checked == true 
+            || document.getElementById("ObsShapeOval").checked == true|| document.getElementById("ObsShapeLobulated").checked == true
+            || document.getElementById("ObsShapeIrregular").checked == true)) {
+                //把表單裡的直輸入到json物件
+                Observation.component[0].code.coding[0].code = document.getElementById("ObsSize").value;
+                Observation.component[0].code.coding[0].display = document.getElementById("ObsSize").value;
+                Observation.component[0].code.coding[1].code = document.querySelector('input[name="ObsShape"]:checked').value;
+                Observation.component[0].code.coding[1].display = document.querySelector('input[name="ObsShape"]:checked').value;
+                var jsonstr = JSON.stringify(Observation, undefined, 4);
+
+                //顯示設完的json物件到文字區塊
+                document.getElementById("Textarea1").value = jsonstr;
+                //上傳json物件到fhir server
+                postData(jsonstr, "Observation");
+            }
+            else { alert(p.id + "未勾選完畢"); }
+        }
+        //根據url打開新的視窗
+        function openUrl() {
+            var urlopen = document.getElementById("urltext").value;
+            window.open(urlopen, '_blank');
+        }
+        
+    </script>
+</body>
+
+</html>

@@ -1,24 +1,37 @@
 var Observation = {
     "resourceType": "Observation",
     "subject": {
-        "reference": "Patient/1479506"
+        "reference": "Patient/2565 "
     },
     "component" : [{ //可放觀察結果
         "code" : { 
             "coding" : [{ 
-                "system" : "SizeMassCodeSystem", //定義結果代碼系統的url
-                "code" : "", // 存結果代碼
-                "display" : "" //存在網頁先是的結果
-             },
-             { 
-                "system" : "ShapeMassCodeSystem", 
-                "code" : "",
-                "display" : ""
-             }]}
+                "system" : "MammoMass/", //定義結果代碼系統的url
+                "code" : "DistancenMassCodeSystem" // 存結果代碼
+             }]},
+        "valueCodeableConcept": {
+            "coding": [{
+                    "system" : "https://jeshika106316155.github.io/newCodeSystem/DistanceCS.html",
+                    "code" : ""
+                }
+            ]
+        }
+    },
+    { 
+        "code" : { 
+            "coding" : [{ 
+                "system" : "MammoMass/", 
+                "code" : "LocationMassCodeSystem"
+             }]},
+        "valueCodeableConcept": {
+            "coding": [{
+                    "system" : "https://jeshika106316155.github.io/newCodeSystem/LocationCS.html",
+                    "code" : ""
+                }
+            ]
+        }
     }]
 }
 var fhir = {
-    "url": "https://hapi.fhir.org/baseR4/"
+    "url": "http://203.64.84.213:8080/fhir/"//"https://hapi.fhir.org/baseR4/"
 }
-
-//https://www.hl7.org/fhir/patient.html

@@ -10,12 +10,12 @@
 
         <h1>New Observation</h1>
         <h3>Mammo Mass</h3>
-        Size:<input type="text" name="ObsSize" id="ObsSize" value="" /> cm<br>
-        Shape:
-        <input type="radio" name="ObsShape" id="ObsShapeRound" value="Round" />Round
-        <input type="radio" name="ObsShape" id="ObsShapeOval" value="Oval" />Oval Shape
-        <input type="radio" name="ObsShape" id="ObsShapeLobulated" value="Lobulated" />Lobulated Shape
-        <input type="radio" name="ObsShape" id="ObsShapeIrregular" value="Irregular" />Irregular Shape
+        Distance:<input type="text" name="MassDistance" id="MassDistance" value="" /> (ex. Straight.line.Finding.to.Sternalnotch)<br>
+        Location:
+        <input type="radio" name="MassLocation" id="MassLocation_" value="breast.left.nipple" />Nipple of left breast
+        <input type="radio" name="MassLocation" id="MassLocation_" value="breast.right.nipple" />Nipple of right breast
+        <input type="radio" name="MassLocation" id="MassLocation_" value="breast.left.centralportion" />Central portion of left breast
+        <input type="radio" name="MassLocation" id="MassLocation_" value="breast.right.centralportion" />Central portion of right breast
         <br>
         <input type="button" value="確定" id="patient" onclick="check(this)" />
     </form>
@@ -37,20 +37,16 @@
                     document.getElementById("urltext").value=fhir.url + resourceType+"/"+ret.id;
                 }
             };
-            //var data = JSON.stringify(jsonObject);
             xhttp.send(jsonObject);
         }
+
         //檢查和設json物件的涵式
         function check(p) {
             //檢查是否標單都填完畢
-            if ((document.getElementById("ObsSize").value != "") && (document.getElementById("ObsShapeRound").checked == true 
-            || document.getElementById("ObsShapeOval").checked == true|| document.getElementById("ObsShapeLobulated").checked == true
-            || document.getElementById("ObsShapeIrregular").checked == true)) {
+            if ((document.getElementById("MassDistance").value != "") && (document.querySelector('input[name="MassLocation"]:checked')!=null)) {
                 //把表單裡的直輸入到json物件
-                Observation.component[0].code.coding[0].code = document.getElementById("ObsSize").value;
-                Observation.component[0].code.coding[0].display = document.getElementById("ObsSize").value;
-                Observation.component[0].code.coding[1].code = document.querySelector('input[name="ObsShape"]:checked').value;
-                Observation.component[0].code.coding[1].display = document.querySelector('input[name="ObsShape"]:checked').value;
+                Observation.component[0].valueCodeableConcept.coding[0].code = document.getElementById("MassDistance").value;
+                Observation.component[1].valueCodeableConcept.coding[0].code = document.querySelector('input[name="MassLocation"]:checked').value;
                 var jsonstr = JSON.stringify(Observation, undefined, 4);
 
                 //顯示設完的json物件到文字區塊

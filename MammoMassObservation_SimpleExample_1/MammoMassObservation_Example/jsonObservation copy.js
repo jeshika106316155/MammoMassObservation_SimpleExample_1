@@ -1,7 +1,7 @@
 var Observation = {
     "resourceType": "Observation",
     "subject": {
-        "reference": "Patient/2565"
+        "reference": "Patient/591245" 
     },
     "component" : [{ //可放觀察結果
         "code" : { 

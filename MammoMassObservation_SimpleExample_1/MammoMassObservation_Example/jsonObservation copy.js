@@ -33,5 +33,5 @@ var Observation = {
     }]
 }
 var fhir = {
-    "url": "http://203.64.84.213:8080/fhir/" //"https://hapi.fhir.org/baseR4/"
+    "url": "https://hapi.fhir.org/baseR4/" //"http://203.64.84.213:8080/fhir/" 
 }
